@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.custom-select {
+  @apply bg-white dark:bg-black3 w-full rounded-md;
+}
