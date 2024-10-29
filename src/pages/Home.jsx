@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Header from "../features/home/Header";
-import SideBar from "../features/home/Sidebar";
+import SideBar from "../features/home/SideBar";
 import Main from "../features/main/Main";
 import { useGetUserData } from "../hooks/useGetUserData";
 import BodyText from "../ui/Bodytext";
