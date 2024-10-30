@@ -5,7 +5,7 @@ const SideBarStateContext = createContext();
 const useSideBarStateContext = () => useContext(SideBarStateContext);
 
 export default function SideBarState({ children }) {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   function handleShow() {
     setIsVisible(true);
