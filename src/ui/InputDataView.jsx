@@ -20,6 +20,7 @@ export default function InputDataView({
               />
             )}
             <input
+              required
               defaultValue={item.title || ""}
               onChange={(e) => handleItemChange(idx, e.target.value)}
               className="flex-1 h-10 px-4 placeholder:text-gray1 rounded-md border border-gray2 bg-transparent font-medium text-[0.8125rem] leading-6 text-black dark:text-white outline-none"

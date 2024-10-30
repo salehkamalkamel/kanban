@@ -11,7 +11,7 @@ function ProtectedRoute() {
       <div className="w-full h-[100vh] flex items-center justify-center bg-gray3 dark:bg-black3">
         <div className="flex items-center justify-center gap-4">
           <LoadingSpinner />
-          <BodyText shape="bodyL" className="text-gray1 w-max ">
+          <BodyText shape="bodyL" className="text-gray1 w-max">
             Loading...
           </BodyText>
         </div>

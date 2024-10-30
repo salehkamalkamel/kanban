@@ -8,7 +8,7 @@ import ColumnCard from "./ColumnCard";
 export default function Column({ column }) {
   return (
     <div className="flex flex-col gap-2 w-72">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between  rounded-md p-4">
         <Heading
           shape="s"
           level={4}

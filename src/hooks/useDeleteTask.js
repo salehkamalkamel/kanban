@@ -10,7 +10,7 @@ function useDeleteTask() {
   } = useMutation({
     mutationFn: ({ boardId, columnId, taskId }) =>
       apiDeleteTask(boardId, columnId, taskId),
-    onSuccess: () => queryClient.invalidateQueries("userData"),
+    onSuccess: () => queryClient.invalidateQueries(["data", "columns"]),
   });
 
   return { deleteTask, isDeletingTask, error };

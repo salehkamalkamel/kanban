@@ -9,7 +9,7 @@ function useDeleteBoard() {
     error,
   } = useMutation({
     mutationFn: ({ boardId }) => apiDeleteBoard(boardId),
-    onSuccess: () => queryClient.invalidateQueries("userData"),
+    onSuccess: () => queryClient.invalidateQueries(["data", "boards"]),
   });
 
   return { deleteBoard, isDeletingBoard, error };

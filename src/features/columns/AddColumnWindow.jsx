@@ -46,7 +46,7 @@ export default function AddColumnWindow({ onClose }) {
           <label className="block text-sm font-bold text-gray1 dark:text-white mb-2">
             Column Name
             <input
-              className="w-full h-10 px-4 mt-2 rounded-md border border-gray2 bg-transparent dark:text-white outline-none"
+              className="w-full h-10 px-4 mt-2 rounded-md border border-gray2 bg-transparent placeholder:font-bold placeholder:text-[0.75rem] placeholder:leading-4 text-black1 font-medium text-[0.8125rem] leading-6 dark:text-white outline-none"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -58,7 +58,10 @@ export default function AddColumnWindow({ onClose }) {
         <div className="w-full">
           <label className="block text-sm font-bold text-gray1 dark:text-white mb-2">
             Select Color
-            <ColorPicker onColorChange={setSelectedColor} />
+            <ColorPicker
+              onColorChange={setSelectedColor}
+              value={selectedColor}
+            />
           </label>
         </div>
         <Button className="w-full" shape="primaryS" type="submit">

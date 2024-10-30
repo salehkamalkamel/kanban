@@ -9,7 +9,7 @@ function useUpdateBoard() {
     error,
   } = useMutation({
     mutationFn: ({ updatedBoard }) => apiUpdateBoard(updatedBoard),
-    onSuccess: () => queryClient.invalidateQueries("userData"),
+    onSuccess: () => queryClient.invalidateQueries("data"),
   });
 
   return { updateBoard, isUpdatingBoard, error };

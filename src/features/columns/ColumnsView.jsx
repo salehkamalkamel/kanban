@@ -1,5 +1,5 @@
 import { useActiveBoardContext } from "../../contexts/ActiveBoard";
-import { useGetColumns } from "../../hooks/useGetColumns";
+import { useGetData } from "../../hooks/useGetData";
 import BodyText from "../../ui/Bodytext";
 import Button from "../../ui/Button";
 import LoadingSpinner from "../../ui/LoadingSpinner";
@@ -11,20 +11,22 @@ import Column from "./Column";
 
 export default function ColumnsView() {
   const { activeBoard, noBoards } = useActiveBoardContext();
-  const { columns, gettingColumns } = useGetColumns(activeBoard?.id);
+  const { data, isLoading } = useGetData("columns", {
+    id: activeBoard?.id,
+  });
 
-  const hasColumns = columns?.length > 0;
+  const hasColumns = data?.data?.length > 0;
 
   return (
     <div className="h-full w-full overflow-hidden bg-gray2 dark:bg-black2">
       <div className="h-full overflow-x-auto p-4">
-        {gettingColumns ? (
+        {isLoading ? (
           <div className="flex justify-center items-center h-full">
             <LoadingSpinner />
           </div>
         ) : hasColumns ? (
           <div className="grid grid-flow-col auto-cols-[minmax(17rem,1fr)] gap-6 h-full w-full">
-            {columns.map((column, idx) => (
+            {data?.data?.map((column, idx) => (
               <Column key={idx} column={column} />
             ))}
             <AddColumnModel />

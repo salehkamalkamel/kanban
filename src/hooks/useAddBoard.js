@@ -10,7 +10,7 @@ function useAddBoard() {
   } = useMutation({
     mutationFn: ({ newBoard }) => apiAddBoard(newBoard),
     onSuccess: () => {
-      queryClient.invalidateQueries("userData");
+      queryClient.invalidateQueries("data");
     },
   });
 

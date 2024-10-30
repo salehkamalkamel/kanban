@@ -1,34 +1,34 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { useGetUserData } from "../hooks/useGetUserData";
+import { useGetData } from "../hooks/useGetData";
 
 const ActiveBoard = createContext();
 const useActiveBoardContext = () => useContext(ActiveBoard);
 
 export default function ActiveBoardContext({ children }) {
-  const { userData, gettingUserData } = useGetUserData();
+  const { data, isLoading } = useGetData("boards");
   const [activeBoard, setActiveBoard] = useState(null);
   const [noBoards, setNoBoards] = useState(false);
 
   // Keep the active board in sync with user data
   useEffect(() => {
-    if (!gettingUserData && userData?.boards) {
-      if (userData.boards.length === 0) {
-        setNoBoards(true);
-        setActiveBoard(null); // No boards available
+    if (!isLoading && data?.data) {
+      const boardExists = data?.data.some(
+        (board) => board.id === activeBoard?.id
+      );
+
+      if (!boardExists) {
+        setActiveBoard(data?.data[0]); // Update to first board if not found
       } else {
-        // If the current active board is not in the updated boards, set the first board as active
-        const boardExists = userData.boards.some(
-          (board) => board.id === activeBoard?.id
+        // Update the active board to reflect the latest state
+        const updatedBoard = data.data.find(
+          (board) => board.id === activeBoard.id
         );
-
-        if (!boardExists) {
-          setActiveBoard(userData.boards[0]); // Update to first board
-        }
-
-        setNoBoards(false);
+        setActiveBoard(updatedBoard);
       }
+
+      setNoBoards(data.data.length === 0);
     }
-  }, [gettingUserData, userData]);
+  }, [isLoading, data, activeBoard]);
 
   // Function to handle board changes
   function handleActiveBoard(board) {

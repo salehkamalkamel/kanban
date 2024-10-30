@@ -14,31 +14,35 @@ function getCurrentUser() {
   });
 }
 
-export async function apiGetUserData() {
+export async function apiGetUserData(dataType = "all", payload = {}) {
   try {
-    // Wait for the Firebase auth state to initialize
     const user = await getCurrentUser();
+    if (!user) throw new Error("User is not authenticated.");
 
-    // Check if user is authenticated
-    if (!user) {
-      throw new Error("User is not authenticated.");
-    }
-
-    // Get the user document from Firestore
     const userDoc = await getDoc(doc(db, "users", user.uid));
+    if (!userDoc.exists()) throw new Error("User data does not exist.");
 
-    // Check if the document exists
-    if (!userDoc.exists()) {
-      throw new Error("User data does not exist.");
+    const data = userDoc.data();
+    let finalData;
+
+    switch (dataType) {
+      case "all":
+        finalData = data;
+        break;
+      case "boards":
+        finalData = data.boards || [];
+        break;
+      case "columns":
+        finalData =
+          data.boards?.find((board) => board.id === payload.id)?.columns || [];
+        break;
+      default:
+        throw new Error(`Invalid data type: ${dataType}`);
     }
 
-    // Return user data
-    return {
-      success: true,
-      data: userDoc.data(),
-    };
+    return { success: true, data: finalData };
   } catch (err) {
-    console.error("Error fetching user data:", err.message);
+    console.error("Error fetching user data:", err);
     throw new Error(err.message);
   }
 }

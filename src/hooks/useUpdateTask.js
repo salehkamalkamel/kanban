@@ -12,7 +12,7 @@ function useUpdateTask() {
       return apiUpdateTask(activeBoardId, columnId, taskId, updatedTask);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries("columns");
+      queryClient.invalidateQueries(["data", "columns"]);
     },
   });
 

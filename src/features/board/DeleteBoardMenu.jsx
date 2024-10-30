@@ -1,19 +1,18 @@
 import { useActiveBoardContext } from "../../contexts/ActiveBoard";
 import { useDeleteBoard } from "../../hooks/useDeleteBoard";
-import { useGetUserData } from "../../hooks/useGetUserData";
 import Heading from "../../ui/Heading";
 import Button from "../../ui/Button";
 import LoadingSpinner from "../../ui/LoadingSpinner";
 import PopupWindow from "../../ui/PopupWindow";
+import { useGetData } from "../../hooks/useGetData";
 
 export default function DeleteBoardMenu({ onClose }) {
   const { deleteBoard, isDeletingBoard } = useDeleteBoard();
-  const { userData, gettingUserData } = useGetUserData();
   const { activeBoard, handleActiveBoard } = useActiveBoardContext();
-
+  const { data, isLoading } = useGetData("boards");
   function getPrevBoardIdx() {
-    if (!gettingUserData && userData?.boards.length > 0) {
-      const currentBoardIdx = userData.boards.findIndex(
+    if (!isLoading && data?.data?.length > 0) {
+      const currentBoardIdx = data?.data?.findIndex(
         (board) => board.id === activeBoard.id
       );
       return currentBoardIdx > 0 ? currentBoardIdx - 1 : -1;
@@ -46,12 +45,12 @@ export default function DeleteBoardMenu({ onClose }) {
                 {
                   onSuccess: () => {
                     const prevBoardIdx = getPrevBoardIdx();
-                    if (prevBoardIdx !== -1) {
-                      handleActiveBoard(userData.boards[prevBoardIdx]);
-                    } else {
-                      handleActiveBoard(userData.boards[0]);
-                    }
                     onClose();
+                    if (prevBoardIdx !== -1) {
+                      handleActiveBoard(data?.data[prevBoardIdx]);
+                    } else {
+                      handleActiveBoard(data?.data[0]);
+                    }
                   },
                 }
               );

@@ -5,8 +5,9 @@ import ThemeToggle from "./ThemeToggle";
 import { BiHide } from "react-icons/bi";
 import { MdVisibility } from "react-icons/md";
 import { useSideBarStateContext } from "../../contexts/SideBarState";
+import LoadingSpinner from "../../ui/LoadingSpinner";
 
-export default function SideBar() {
+export default function SideBar({ data, isLoading }) {
   const rootElement = document.documentElement;
   const [isDark, setIsDark] = useState(rootElement.classList.contains("dark"));
   const { handleShow, handleHide, handleToggle, isVisible } =
@@ -46,7 +47,13 @@ export default function SideBar() {
             <img src={isDark ? "logoDark.svg" : "logoLight.svg"} alt="Logo" />
           </div>
 
-          <SideBarMenu />
+          {isLoading ? (
+            <div className="flex w-full items-center justify-center py-8">
+              <LoadingSpinner />
+            </div>
+          ) : (
+            <SideBarMenu data={data} />
+          )}
 
           <div className="mt-auto flex flex-col items-center gap-4 w-full">
             <ThemeToggle />
