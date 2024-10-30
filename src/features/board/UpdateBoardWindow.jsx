@@ -7,19 +7,30 @@ import { useUpdateBoard } from "../../hooks/useUpdateBoard"; // Custom hook to u
 import { useActiveBoardContext } from "../../contexts/ActiveBoard";
 import PopupWindow from "../../ui/PopupWindow";
 import InputDataView from "../../ui/InputDataView";
+import { v4 as uuidv4 } from "uuid";
 
 function UpdateBoardWindow({ onClose }) {
   const { activeBoard: board } = useActiveBoardContext();
-  const [title, setTitle] = useState(board.title); // Populate with existing title
-  const [columns, setColumns] = useState(board.columns || []); // Populate with existing columns
+  const [title, setTitle] = useState(board?.title || ""); // Populate with existing title
+  const [columns, setColumns] = useState(board?.columns || []); // Populate with existing columns
   const { updateBoard, isUpdatingBoard } = useUpdateBoard(); // Use update hook
   const queryClient = useQueryClient();
 
-  const handleAddColumn = () => setColumns([...columns, { name: "" }]);
+  const handleAddColumn = () =>
+    setColumns([
+      ...columns,
+      { title: "", id: uuidv4(), columnColor: "#A8A4FF", tasks: [] },
+    ]);
 
   const handleColumnChange = (index, value) => {
     const updatedColumns = [...columns];
-    updatedColumns[index].name = value;
+    updatedColumns[index].title = value;
+    setColumns(updatedColumns);
+  };
+
+  const handleColumnColorChange = (index, value) => {
+    const updatedColumns = [...columns];
+    updatedColumns[index].columnColor = value;
     setColumns(updatedColumns);
   };
 
@@ -83,6 +94,7 @@ function UpdateBoardWindow({ onClose }) {
             dataType="Column"
             handleItemChange={handleColumnChange}
             handleDeleteItem={handleDeleteColumn}
+            handleColomnColor={handleColumnColorChange}
           />
 
           <Button

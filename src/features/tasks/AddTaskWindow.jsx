@@ -66,7 +66,7 @@ export default function AddTaskWindow({ onClose, columnId }) {
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full h-10 px-4 mt-2 rounded-md border border-gray2 bg-transparent dark:text-white outline-none"
+              className="w-full h-10 px-4 mt-2 rounded-md border border-gray2 bg-transparent placeholder:font-bold placeholder:text-[0.75rem] placeholder:leading-4 text-black1 font-medium text-[0.8125rem] leading-6 dark:text-white outline-none"
               type="text"
               placeholder="e.g. Take coffee break"
               required
@@ -80,7 +80,7 @@ export default function AddTaskWindow({ onClose, columnId }) {
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full mt-2 min-h-28 px-4 py-2 rounded-md border border-gray2 bg-transparent dark:text-white outline-none"
+              className="w-full mt-2 min-h-28 px-4 py-2 rounded-md border border-gray2 bg-transparent placeholder:font-bold placeholder:text-[0.75rem] placeholder:leading-4 text-black1 font-medium text-[0.8125rem] leading-6 dark:text-white outline-none"
               placeholder="e.g. It’s always good to take a break. This 15 minute break will recharge the batteries a little."
               required
             />

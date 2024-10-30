@@ -35,6 +35,12 @@ function AddBoardWindow({ onClose }) {
     setColumns((columns) => columns.filter((_, idx) => idx !== index));
   };
 
+  const handleColumnColorChange = (index, value) => {
+    const updatedColumns = [...columns];
+    updatedColumns[index].columnColor = value;
+    setColumns(updatedColumns);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const newBoard = {
@@ -47,7 +53,7 @@ function AddBoardWindow({ onClose }) {
       { newBoard },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries("userData");
+          queryClient.invalidateQueries("userData", "columns");
           onClose();
         },
       }
@@ -94,6 +100,7 @@ function AddBoardWindow({ onClose }) {
             dataType="Column"
             handleItemChange={handleColumnChange}
             handleDeleteItem={handleDeleteColumn}
+            handleColomnColor={handleColumnColorChange}
           />
 
           <Button

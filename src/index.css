@@ -5,3 +5,13 @@
 .custom-select {
   @apply bg-white dark:bg-black3 w-full rounded-md;
 }
+
+.sm-color-picker::-webkit-color-swatch {
+  border-radius: 8px;
+  border: none;
+}
+
+.sm-color-picker::-moz-color-swatch {
+  border-radius: 8px;
+  border: none;
+}
