@@ -17,9 +17,7 @@ export default function SubTaskItem({ subTask, handleSubTaskChange }) {
   return (
     <div
       onClick={handleClick}
-      className={`flex cursor-pointer w-full rounded-md dark:bg-black2 ${
-        completed ? "bg-gray3" : "bg-transparent"
-      } hover:bg-gray2 items-center justify-center gap-2 p-4`}
+      className={`flex cursor-pointer w-full rounded-md hover:opacity-75 dark:bg-black2 bg-gray3 items-center justify-center gap-2 p-4`}
     >
       <span
         className={`w-4 h-4 flex items-center  justify-center rounded-sm text-white ${

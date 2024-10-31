@@ -15,3 +15,11 @@
   border-radius: 8px;
   border: none;
 }
+
+.line {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: #828fa3;
+  opacity: 0.75;
+}

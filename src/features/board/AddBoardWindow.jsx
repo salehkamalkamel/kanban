@@ -7,6 +7,7 @@ import LoadingSpinner from "../../ui/LoadingSpinner";
 import { useQueryClient } from "@tanstack/react-query";
 import PopupWindow from "../../ui/PopupWindow";
 import InputDataView from "../../ui/InputDataView";
+import { useActiveBoardContext } from "../../contexts/ActiveBoard";
 
 function AddBoardWindow({ onClose }) {
   const queryClient = useQueryClient();
@@ -18,6 +19,7 @@ function AddBoardWindow({ onClose }) {
   ]); // Initial empty column
 
   const { addBoard, isAddingBoard } = useAddBoard();
+  const { handleActiveBoard } = useActiveBoardContext();
 
   const handleAddColumn = () =>
     setColumns([
@@ -54,6 +56,7 @@ function AddBoardWindow({ onClose }) {
       {
         onSuccess: () => {
           queryClient.invalidateQueries("userData", "columns");
+          handleActiveBoard(newBoard);
           onClose();
         },
       }

@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useGetData } from "../hooks/useGetData";
+import { auth } from "../firebase";
 
 const ActiveBoard = createContext();
 const useActiveBoardContext = () => useContext(ActiveBoard);
@@ -11,22 +12,22 @@ export default function ActiveBoardContext({ children }) {
 
   // Keep the active board in sync with user data
   useEffect(() => {
-    if (!isLoading && data?.data) {
-      const boardExists = data?.data.some(
-        (board) => board.id === activeBoard?.id
-      );
+    const unsubscribe = auth.onAuthStateChanged(() => {
+      setActiveBoard(null); // Reset active board when user changes
+    });
+    return unsubscribe;
+  }, []);
 
-      if (!boardExists) {
-        setActiveBoard(data?.data[0]); // Update to first board if not found
-      } else {
-        // Update the active board to reflect the latest state
-        const updatedBoard = data.data.find(
-          (board) => board.id === activeBoard.id
-        );
-        setActiveBoard(updatedBoard);
+  // Update active board based on data availability
+  useEffect(() => {
+    if (!isLoading) {
+      if (data?.data.length === 0) {
+        setActiveBoard(null);
+        setNoBoards(true);
+      } else if (!activeBoard) {
+        setActiveBoard(data?.data[0]); // Set first board as default if none is active
+        setNoBoards(false);
       }
-
-      setNoBoards(data.data.length === 0);
     }
   }, [isLoading, data, activeBoard]);
 

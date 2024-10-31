@@ -1,8 +1,9 @@
 import classNames from "classnames";
+import PropTypes from "prop-types";
 
 export default function Button({
   onClick,
-  onOpen,
+  onOpen = null,
   children,
   disabled = false,
   className = "",
@@ -41,3 +42,18 @@ export default function Button({
     </button>
   );
 }
+
+Button.proptypes = {
+  onClick: PropTypes.func,
+  onOpen: PropTypes.func,
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+  type: PropTypes.string,
+  shape: PropTypes.oneOf([
+    "textOnlyP",
+    "primaryL",
+    "primaryS",
+    "secondary",
+    "error",
+  ]),
+};

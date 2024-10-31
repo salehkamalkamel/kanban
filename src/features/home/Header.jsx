@@ -11,21 +11,21 @@ import { IoAddOutline } from "react-icons/io5";
 
 export default function Header({ data, isLoading }) {
   const [isDark, setIsDark] = useState(false);
-  const [boardTitle, setBoardTitle] = useState("");
+  const [boardTitle, setBoardTitle] = useState("Loading...");
 
   const { handleShow } = useSideBarStateContext();
   const { activeBoard } = useActiveBoardContext();
 
   useEffect(() => {
     if (isLoading) {
-      setBoardTitle("");
+      setBoardTitle("Loading...");
     } else if (!data?.boards?.length) {
       setBoardTitle("No Boards Available");
-    } else if (data?.boards.length > 0 && !activeBoard) {
-      setBoardTitle("Select Board");
     } else if (activeBoard) {
       const board = data.boards.find((board) => board.id === activeBoard.id);
       setBoardTitle(board ? board.title : "Board Not Found");
+    } else {
+      setBoardTitle("Select Board");
     }
   }, [data, activeBoard, isLoading]);
 

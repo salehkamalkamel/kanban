@@ -10,6 +10,7 @@ export default function DeleteBoardMenu({ onClose }) {
   const { deleteBoard, isDeletingBoard } = useDeleteBoard();
   const { activeBoard, handleActiveBoard } = useActiveBoardContext();
   const { data, isLoading } = useGetData("boards");
+
   function getPrevBoardIdx() {
     if (!isLoading && data?.data?.length > 0) {
       const currentBoardIdx = data?.data?.findIndex(
