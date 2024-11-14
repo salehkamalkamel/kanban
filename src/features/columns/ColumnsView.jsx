@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { useActiveBoardContext } from "../../contexts/ActiveBoard";
-import { useGetData } from "../../hooks/useGetData";
+import { useDataContext } from "../../contexts/DataProvider";
+import { useSideBarStateContext } from "../../contexts/SideBarState";
 import BodyText from "../../ui/Bodytext";
 import Button from "../../ui/Button";
 import LoadingSpinner from "../../ui/LoadingSpinner";
@@ -10,33 +12,60 @@ import AddColumnWindow from "./AddColumnWindow";
 import Column from "./Column";
 
 export default function ColumnsView() {
-  const { activeBoard, noBoards } = useActiveBoardContext();
-  const { data, isLoading } = useGetData("columns", {
-    id: activeBoard?.id,
-  });
+  const { isLoading, getColumnsForBoard, boards } = useDataContext();
+  const [columnsViewState, setColumnsViewState] = useState("loading");
+  const { activeBoardId } = useActiveBoardContext();
+  const [columns, setColumns] = useState([]);
 
-  const hasColumns = data?.data?.length > 0;
+  useEffect(() => {
+    setColumns(getColumnsForBoard(activeBoardId));
+  }, [activeBoardId, isLoading, getColumnsForBoard, boards]);
 
-  return (
-    <div className="h-full w-full overflow-hidden bg-gray2 dark:bg-black2">
-      <div className="h-full overflow-x-auto p-4">
-        {isLoading ? (
+  useEffect(() => {
+    if (isLoading) {
+      setColumnsViewState("loading");
+    } else if (!boards.length) {
+      setColumnsViewState("no boards available");
+    } else if (!activeBoardId && boards.length) {
+      setColumnsViewState("no boards selected");
+    } else if (activeBoardId && !columns.length) {
+      setColumnsViewState("no columns");
+    } else {
+      setColumnsViewState("done");
+    }
+  }, [isLoading, boards, activeBoardId, columns]);
+
+  const renderContent = () => {
+    switch (columnsViewState) {
+      case "loading":
+        return (
           <div className="flex justify-center items-center h-full">
             <LoadingSpinner />
           </div>
-        ) : hasColumns ? (
+        );
+      case "no boards available":
+        return <NoBoardsAvilable />;
+      case "no boards selected":
+        return <NoBoardSelected />;
+      case "no columns":
+        return <EmptyState />;
+      case "done":
+        return (
           <div className="grid grid-flow-col auto-cols-[minmax(17rem,1fr)] gap-6 h-full w-full">
-            {data?.data?.map((column, idx) => (
+            {columns.map((column, idx) => (
               <Column key={idx} column={column} />
             ))}
             <AddColumnModel />
           </div>
-        ) : noBoards ? (
-          <NoBoardSelected />
-        ) : (
-          <EmptyState />
-        )}
-      </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="h-full w-full overflow-hidden bg-gray2 dark:bg-black2">
+      <div className="h-full overflow-x-auto p-4">{renderContent()}</div>
     </div>
   );
 }
@@ -80,7 +109,7 @@ function EmptyState() {
 }
 
 // No Board Selected Component
-function NoBoardSelected() {
+function NoBoardsAvilable() {
   return (
     <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
       <BodyText className="text-gray1" shape="bodyL">
@@ -94,6 +123,21 @@ function NoBoardSelected() {
           <AddBoardWindow />
         </Model.Window>
       </Model>
+    </div>
+  );
+}
+
+function NoBoardSelected() {
+  const { handleShow } = useSideBarStateContext();
+
+  return (
+    <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
+      <BodyText className="text-gray1" shape="bodyL">
+        No Boards Selected.
+      </BodyText>
+      <Button shape="primaryS" className=" px-8" onClick={handleShow}>
+        Select Board
+      </Button>
     </div>
   );
 }

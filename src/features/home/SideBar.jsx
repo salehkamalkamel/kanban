@@ -6,12 +6,16 @@ import { BiHide } from "react-icons/bi";
 import { MdVisibility } from "react-icons/md";
 import { useSideBarStateContext } from "../../contexts/SideBarState";
 import LoadingSpinner from "../../ui/LoadingSpinner";
+import { useDataContext } from "../../contexts/DataProvider";
 
-export default function SideBar({ data, isLoading }) {
+export default function SideBar() {
   const rootElement = document.documentElement;
   const [isDark, setIsDark] = useState(rootElement.classList.contains("dark"));
   const { handleShow, handleHide, handleToggle, isVisible } =
     useSideBarStateContext();
+
+  const { boards, isLoading } = useDataContext();
+
   useEffect(() => {
     // Observer to monitor changes in the root element's classList
     const observer = new MutationObserver(() => {
@@ -52,7 +56,7 @@ export default function SideBar({ data, isLoading }) {
               <LoadingSpinner />
             </div>
           ) : (
-            <SideBarMenu data={data} />
+            <SideBarMenu boards={boards} />
           )}
 
           <div className="mt-auto flex flex-col items-center gap-4 w-full">

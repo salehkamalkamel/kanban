@@ -5,18 +5,26 @@ const SideBarStateContext = createContext();
 const useSideBarStateContext = () => useContext(SideBarStateContext);
 
 export default function SideBarState({ children }) {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(
+    localStorage.getItem("show-side-bar") === "true" || false
+  );
 
   function handleShow() {
     setIsVisible(true);
+    localStorage.setItem("show-side-bar", "true");
   }
 
   function handleHide() {
     setIsVisible(false);
+    localStorage.setItem("show-side-bar", "false");
   }
 
   function handleToggle() {
-    setIsVisible((state) => !state);
+    setIsVisible((state) => {
+      const newState = !state;
+      localStorage.setItem("show-side-bar", newState.toString());
+      return newState;
+    });
   }
 
   return (

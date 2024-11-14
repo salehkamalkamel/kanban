@@ -10,7 +10,7 @@ function useAddColumn() {
   } = useMutation({
     mutationFn: ({ boardId, newColumn }) => apiAddColumn(boardId, newColumn),
     onSuccess: async () => {
-      await queryClient.invalidateQueries(["data", "boards"]);
+      await queryClient.invalidateQueries(["data", "all"]);
       // queryClient.refetchQueries(["data", "boards"]);
     },
   });

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import Button from "../../ui/Button";
 import Heading from "../../ui/Heading";
@@ -8,13 +8,32 @@ import { useActiveBoardContext } from "../../contexts/ActiveBoard";
 import PopupWindow from "../../ui/PopupWindow";
 import InputDataView from "../../ui/InputDataView";
 import { v4 as uuidv4 } from "uuid";
+import { useDataContext } from "../../contexts/DataProvider";
 
 function UpdateBoardWindow({ onClose }) {
-  const { activeBoard: board } = useActiveBoardContext();
-  const [title, setTitle] = useState(board?.title || ""); // Populate with existing title
-  const [columns, setColumns] = useState(board?.columns || []); // Populate with existing columns
+  const { activeBoardId } = useActiveBoardContext();
+  const { getColumnsForBoard, getBoardById, isLoading } = useDataContext();
   const { updateBoard, isUpdatingBoard } = useUpdateBoard(); // Use update hook
   const queryClient = useQueryClient();
+  const [activeBoard, setActiveBoard] = useState();
+  const [title, setTitle] = useState(activeBoard?.title || ""); // Populate with existing title
+
+  useEffect(() => {
+    if (activeBoard) {
+      setTitle(activeBoard.title);
+    }
+  }, [activeBoard]);
+
+  useEffect(() => {
+    const board = getBoardById(activeBoardId);
+    setActiveBoard(board);
+  }, [activeBoardId, isLoading, getBoardById]);
+
+  const [columns, setColumns] = useState([]);
+
+  useEffect(() => {
+    setColumns(getColumnsForBoard(activeBoardId));
+  }, [activeBoardId, getColumnsForBoard]);
 
   const handleAddColumn = () =>
     setColumns([
@@ -42,7 +61,7 @@ function UpdateBoardWindow({ onClose }) {
     e.preventDefault();
 
     const updatedBoard = {
-      ...board,
+      ...activeBoard,
       title,
       columns,
     };

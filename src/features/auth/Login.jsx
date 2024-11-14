@@ -37,7 +37,7 @@ export default function Login() {
   }
 
   return (
-    <div className="w-[21rem] sm:w-[34rem] z-50 bg-white dark:bg-black3 rounded-md fixed top-20 sm:top-28 left-1/2 -translate-x-1/2 p-6 sm:p-8 flex flex-col items-center justify-center sm:grid sm:grid-cols-[1fr_2fr] gap-4 sm:gap-12 drop-shadow-xl">
+    <div className="w-[21rem] sm:w-[34rem] z-50 bg-white  rounded-md fixed top-20 sm:top-28 left-1/2 -translate-x-1/2 p-6 sm:p-8 flex flex-col items-center justify-center sm:grid sm:grid-cols-[1fr_2fr] gap-4 sm:gap-12 drop-shadow-xl text-black1">
       {/* Logo Section */}
       <div className="flex items-center justify-center ">
         <Logo />
@@ -61,7 +61,7 @@ export default function Login() {
             }
             disabled={isLogging || isLoginWithGoogle}
             shape="secondary"
-            className="flex items-center gap-4 w-full justify-center"
+            className="flex items-center gap-4 w-full justify-center bg-gray1"
           >
             {!isLoginWithGoogle && <FaGoogle />}
             {isLoginWithGoogle ? <LoadingSpinner /> : "Continue with Google"}
@@ -91,7 +91,7 @@ export default function Login() {
           )}
 
           <input
-            className="w-full h-[2.5rem] rounded-md border bg-transparent border-gray2 px-4 py-2 text-[0.8125rem] font-medium dark:text-white outline-none"
+            className="w-full h-[2.5rem] rounded-md border bg-transparent border-gray2 px-4 py-2 text-[0.8125rem] font-medium  outline-none"
             placeholder="Enter your Password"
             type="password"
             aria-invalid={!!errors.password}

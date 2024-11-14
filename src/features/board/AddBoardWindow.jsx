@@ -19,7 +19,7 @@ function AddBoardWindow({ onClose }) {
   ]); // Initial empty column
 
   const { addBoard, isAddingBoard } = useAddBoard();
-  const { handleActiveBoard } = useActiveBoardContext();
+  const { handleActiveBoardId } = useActiveBoardContext();
 
   const handleAddColumn = () =>
     setColumns([
@@ -56,7 +56,7 @@ function AddBoardWindow({ onClose }) {
       {
         onSuccess: () => {
           queryClient.invalidateQueries("userData", "columns");
-          handleActiveBoard(newBoard);
+          handleActiveBoardId(newBoard.id);
           onClose();
         },
       }

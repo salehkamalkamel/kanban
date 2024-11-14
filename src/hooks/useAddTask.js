@@ -13,7 +13,7 @@ function useAddTask() {
       apiAddTask(boardId, columnId, newTask),
     onSuccess: () => {
       // Invalidate or refetch columns to reflect the new task
-      queryClient.invalidateQueries(["data", "columns"]);
+      queryClient.invalidateQueries(["data", "all"]);
     },
   });
 

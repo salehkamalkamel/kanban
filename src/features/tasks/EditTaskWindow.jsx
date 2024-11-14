@@ -1,25 +1,21 @@
-import Heading from "../../ui/Heading";
 import { useState } from "react";
-import Button from "../../ui/Button";
+import { useActiveBoardContext } from "../../contexts/ActiveBoard";
+import { useUpdateTask } from "../../hooks/useUpdateTask";
 import { v4 as uuidv4 } from "uuid";
 
-import { useAddTask } from "../../hooks/useAddTask";
-import { useActiveBoardContext } from "../../contexts/ActiveBoard";
+import Button from "../../ui/Button";
+import Heading from "../../ui/Heading";
 import LoadingSpinner from "../../ui/LoadingSpinner";
 import PopupWindow from "../../ui/PopupWindow";
 import InputDataView from "../../ui/InputDataView";
 
-export default function AddTaskWindow({ onClose, columnId }) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("pending");
+export default function EditTaskWindow({ task, onClose, columnId }) {
+  const [title, setTitle] = useState(task.title || "");
+  const [description, setDescription] = useState(task.description || "");
+  const [status, setStatus] = useState(task.status || "pending");
   const { activeBoardId } = useActiveBoardContext();
-  const [subTasks, setSubTasks] = useState([
-    { title: "", completed: false, id: uuidv4() },
-    { title: "", completed: false, id: uuidv4() },
-  ]);
-
-  const { addTask, addingTask } = useAddTask();
+  const [subTasks, setSubTasks] = useState(task.subTasks || []);
+  const { updateTask, isUpdatingTask } = useUpdateTask();
 
   function handleAddTask() {
     setSubTasks((tasks) => [
@@ -40,15 +36,28 @@ export default function AddTaskWindow({ onClose, columnId }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const newTask = { title, description, subTasks, status, id: uuidv4() };
-    addTask(
-      { boardId: activeBoardId, columnId, newTask },
+    const newTask = {
+      taskId: task.id,
+      title,
+      description,
+      subTasks,
+      status,
+    };
+
+    updateTask(
       {
-        onSuccess: () => onClose(),
+        activeBoardId,
+        columnId,
+        taskId: task.id,
+        updatedTask: newTask,
+      },
+      {
+        onSuccess: () => {
+          onClose();
+        },
       }
     );
   }
-
   return (
     <PopupWindow onClose={onClose}>
       <form onSubmit={handleSubmit} className=" flex flex-col gap-4 ">
@@ -57,7 +66,7 @@ export default function AddTaskWindow({ onClose, columnId }) {
           level={2}
           className="text-start text-black dark:text-white"
         >
-          Add New Task
+          Edit Task
         </Heading>
 
         <div className="w-full">
@@ -121,7 +130,7 @@ export default function AddTaskWindow({ onClose, columnId }) {
         </div>
 
         <Button className="w-full" shape="primaryS" type="submit">
-          {addingTask ? <LoadingSpinner /> : "Create Task"}
+          {isUpdatingTask ? <LoadingSpinner /> : "Save"}
         </Button>
       </form>
     </PopupWindow>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Button from "../../ui/Button";
 import Heading from "../../ui/Heading";
 import Model from "../../ui/Model";
 import BoardCtrlMenu from "../board/BoardCtrlMenu";
@@ -7,27 +6,35 @@ import BoardCtrlBtn from "../board/BoardCtrlBtn";
 import { useSideBarStateContext } from "../../contexts/SideBarState";
 import { useActiveBoardContext } from "../../contexts/ActiveBoard";
 import { IoIosArrowDown } from "react-icons/io";
-import { IoAddOutline } from "react-icons/io5";
+import LogoutSystem from "../auth/LogoutSystem";
+import { useDataContext } from "../../contexts/DataProvider";
 
-export default function Header({ data, isLoading }) {
+export default function Header() {
   const [isDark, setIsDark] = useState(false);
   const [boardTitle, setBoardTitle] = useState("Loading...");
 
   const { handleShow } = useSideBarStateContext();
-  const { activeBoard } = useActiveBoardContext();
+  const { activeBoardId } = useActiveBoardContext();
+  const { boards, isLoading, getBoardById } = useDataContext();
+
+  const [activeBoard, setActiveBoard] = useState();
+
+  useEffect(() => {
+    const board = getBoardById(activeBoardId);
+    setActiveBoard(board);
+  }, [activeBoardId, isLoading, getBoardById]);
 
   useEffect(() => {
     if (isLoading) {
       setBoardTitle("Loading...");
-    } else if (!data?.boards?.length) {
+    } else if (!boards.length) {
       setBoardTitle("No Boards Available");
     } else if (activeBoard) {
-      const board = data.boards.find((board) => board.id === activeBoard.id);
-      setBoardTitle(board ? board.title : "Board Not Found");
-    } else {
+      setBoardTitle(activeBoard?.title || "");
+    } else if (!activeBoard && boards?.length) {
       setBoardTitle("Select Board");
     }
-  }, [data, activeBoard, isLoading]);
+  }, [activeBoard, isLoading, boards]);
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
@@ -70,15 +77,7 @@ export default function Header({ data, isLoading }) {
       </div>
 
       <div className="flex items-center gap-4 px-6">
-        {activeBoard?.id && (
-          <Button
-            shape="primaryS"
-            className="flex items-center gap-2 w-fit px-6 py-[0.75rem] sm:py-[1rem]"
-          >
-            <IoAddOutline className="text-white text-lg" />
-            <p className="hidden sm:block">Add Column</p>
-          </Button>
-        )}
+        <LogoutSystem />
 
         {activeBoard?.id && (
           <Model>

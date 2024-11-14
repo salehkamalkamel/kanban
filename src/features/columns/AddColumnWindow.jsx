@@ -11,7 +11,7 @@ import PopupWindow from "../../ui/PopupWindow";
 export default function AddColumnWindow({ onClose }) {
   const [selectedColor, setSelectedColor] = useState("#A8A4FF");
   const [title, setTitle] = useState("");
-  const { activeBoard } = useActiveBoardContext();
+  const { activeBoardId } = useActiveBoardContext();
   const { addColumn, isAddingColumn } = useAddColumn();
 
   function handleSubmit(e) {
@@ -24,10 +24,13 @@ export default function AddColumnWindow({ onClose }) {
           title,
           tasks: [],
         },
-        boardId: activeBoard?.id,
+        boardId: activeBoardId,
       },
       {
-        onSuccess: () => onClose(),
+        onSuccess: () => {
+          console.log("done");
+          onClose();
+        },
       }
     );
   }

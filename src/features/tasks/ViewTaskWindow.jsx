@@ -18,7 +18,7 @@ export default function ViewTaskWindow({ onClose, task, columnId }) {
   });
 
   const { updateTask, isUpdatingTask } = useUpdateTask();
-  const { activeBoard } = useActiveBoardContext();
+  const { activeBoardId } = useActiveBoardContext();
 
   // Sync state when the task prop changes
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function ViewTaskWindow({ onClose, task, columnId }) {
     e.preventDefault();
     updateTask(
       {
-        activeBoardId: activeBoard.id,
+        activeBoardId,
         columnId,
         taskId: task.id,
         updatedTask: { ...task, ...taskData },
@@ -80,7 +80,7 @@ export default function ViewTaskWindow({ onClose, task, columnId }) {
               <TaskCtrlBtn />
             </Model.Toggle>
             <Model.Window>
-              <TaskCtrlMenu columnId={columnId} taskId={task.id} />
+              <TaskCtrlMenu columnId={columnId} task={task} />
             </Model.Window>
           </Model>
         </div>

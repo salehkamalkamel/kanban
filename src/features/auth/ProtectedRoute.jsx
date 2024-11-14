@@ -5,7 +5,6 @@ import BodyText from "../../ui/Bodytext";
 
 function ProtectedRoute() {
   const { user, loading } = useAuth();
-
   if (loading) {
     return (
       <div className="w-full h-[100vh] flex items-center justify-center bg-gray3 dark:bg-black3">
@@ -18,6 +17,7 @@ function ProtectedRoute() {
       </div>
     );
   }
+
   return user ? <Outlet /> : <Navigate to="/login" replace />;
 }
 

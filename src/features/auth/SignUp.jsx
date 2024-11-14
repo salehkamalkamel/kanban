@@ -37,7 +37,7 @@ export default function SignUp() {
   }
 
   return (
-    <div className="w-[21rem] sm:w-[34rem] z-50 bg-white dark:bg-black3 rounded-md fixed top-20 sm:top-28 left-1/2 -translate-x-1/2 p-6 sm:p-8 flex flex-col items-center justify-center sm:grid sm:grid-cols-[1fr_2fr] gap-4 sm:gap-12 drop-shadow-xl">
+    <div className="w-[21rem] sm:w-[34rem] z-50 bg-white rounded-md fixed top-20 sm:top-28 left-1/2 -translate-x-1/2 p-6 sm:p-8 flex flex-col items-center justify-center sm:grid sm:grid-cols-[1fr_2fr] gap-4 sm:gap-12 drop-shadow-xl text-black1">
       {/* Logo Section */}
       <div className="flex items-center justify-center">
         <Logo />

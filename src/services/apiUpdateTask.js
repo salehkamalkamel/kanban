@@ -42,11 +42,21 @@ async function apiUpdateTask(activeBoardId, columnId, taskId, updatedTask) {
       board.id === activeBoardId ? { ...board, columns: updatedColumns } : board
     );
 
+    console.log(updatedBoards);
     // Save the updated boards back to Firestore
     await updateDoc(userDocRef, { boards: updatedBoards });
 
-    console.log("Task updated successfully!");
-    return { success: true, message: "Task updated successfully." };
+    // Re-fetch the document to confirm the update
+    const updatedDoc = await getDoc(userDocRef);
+    const updatedBoardsAfterUpdate = updatedDoc.data().boards || [];
+
+    console.log("Task updated successfully!", updatedBoardsAfterUpdate);
+
+    return {
+      success: true,
+      message: "Task updated successfully.",
+      updatedBoards: updatedBoardsAfterUpdate,
+    };
   } catch (err) {
     console.error("Error updating task:", err.message);
     throw new Error(err.message);

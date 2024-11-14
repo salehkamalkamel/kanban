@@ -5,6 +5,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 async function apiLoginWithGoogle() {
   try {
     const result = await signInWithPopup(auth, googleProvider); // Fix: Await the result
+
     const user = result.user;
 
     const userDoc = await getDoc(doc(db, "users", user.uid));
